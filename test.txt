@@ -1,0 +1,3328 @@
+{
+	"description": "JSON-RPC API of XBMC",
+	"id": "http://xbmc.org/jsonrpc/ServiceDescription.json",
+	"methods": {
+		"Addons.GetAddonDetails": {
+			"description": "Gets the details of a specific addon",
+			"params": [
+				{
+					"name": "addonid",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Addon.Fields",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"addon": {
+						"$ref": "Addon.Details",
+						"required": true
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Addons.GetAddons": {
+			"description": "Gets all available addons",
+			"params": [
+				{
+					"$ref": "Addon.Types",
+					"default": "unknown",
+					"name": "type"
+				},
+				{
+					"$ref": "Addon.Content",
+					"default": "unknown",
+					"description": "Content provided by the addon. Only considered for plugins and scripts.",
+					"name": "content"
+				},
+				{
+					"default": "all",
+					"name": "enabled",
+					"type": [
+						{
+							"type": "boolean"
+						},
+						{
+							"enums": [
+								"all"
+							],
+							"type": "string"
+						}
+					]
+				},
+				{
+					"$ref": "Addon.Fields",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"default": true,
+					"name": "installed",
+					"type": [
+						{
+							"type": "boolean"
+						},
+						{
+							"enums": [
+								"all"
+							],
+							"type": "string"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"addons": {
+						"items": {
+							"$ref": "Addon.Details"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Application.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"items": {
+						"$ref": "Application.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "Application.Property.Value"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetAlbumDetails": {
+			"description": "Retrieve details about a specific album",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "albumid",
+					"required": true
+				},
+				{
+					"$ref": "Audio.Fields.Album",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"albumdetails": {
+						"$ref": "Audio.Details.Album"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetAlbums": {
+			"description": "Retrieve all albums from specified artist (and role) or that has songs of the specified genre",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Album",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"description": "Song genre. Filter for existence of songs with this genre",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"description": "Song genre. Filter for existence of songs with this genre",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.Albums"
+						}
+					]
+				},
+				{
+					"default": false,
+					"name": "includesingles",
+					"type": "boolean"
+				},
+				{
+					"default": false,
+					"description": "Whether or not to include all roles when filtering by artist, rather than the default of excluding other contributions. When true it overrides any role filter value.",
+					"name": "allroles",
+					"type": "boolean"
+				}
+			],
+			"returns": {
+				"properties": {
+					"albums": {
+						"items": {
+							"$ref": "Audio.Details.Album"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetArtistDetails": {
+			"description": "Retrieve details about a specific artist",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "artistid",
+					"required": true
+				},
+				{
+					"$ref": "Audio.Fields.Artist",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"artistdetails": {
+						"$ref": "Audio.Details.Artist"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetArtists": {
+			"description": "Retrieve all artists. For backward compatibility by default this implicity does not include those that only contribute other roles, however absolutely all artists can be returned using allroles=true",
+			"params": [
+				{
+					"$ref": "Optional.Boolean",
+					"default": null,
+					"description": "Whether or not to only include album artists rather than the artists of only individual songs as well. If the parameter is not passed or is passed as null the GUI setting will be used",
+					"name": "albumartistsonly"
+				},
+				{
+					"$ref": "Audio.Fields.Artist",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"description": "Deprecated, use songgenreid. Filter for existence of songs with this genre",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"songgenreid": {
+									"$ref": "Library.Id",
+									"description": "Song genreid. Filter for existence of songs with this genre",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"songgenreid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"songgenreid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"description": "Deprecated, use songgenre. Filter for existence of songs with this genre",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"songgenre": {
+									"description": "Song genre. Filter for existence of songs with this genre",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"songgenre": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"songgenre": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"albumid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"album": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"songid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"songid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"songid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"roleid": {
+									"$ref": "Library.Id",
+									"description": "Role contributed by artist. Overridden by allroles parameter",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"role": {
+									"description": "Role contributed by artist. Overridden by allroles parameter",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.Artists"
+						}
+					]
+				},
+				{
+					"default": false,
+					"description": "Whether or not to include all artists irrespective of the role they contributed. When true it overrides any role filter value.",
+					"name": "allroles",
+					"type": "boolean"
+				}
+			],
+			"returns": {
+				"properties": {
+					"artists": {
+						"items": {
+							"$ref": "Audio.Details.Artist"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetGenres": {
+			"description": "Retrieve all genres",
+			"params": [
+				{
+					"$ref": "Library.Fields.Genre",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"genres": {
+						"items": {
+							"$ref": "Library.Details.Genre"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetProperties": {
+			"description": "Retrieves the values of the music library properties",
+			"params": [
+				{
+					"items": {
+						"$ref": "Audio.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "Audio.Property.Value"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetRecentlyAddedAlbums": {
+			"description": "Retrieve recently added albums",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Album",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"albums": {
+						"items": {
+							"$ref": "Audio.Details.Album"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetRecentlyAddedSongs": {
+			"description": "Retrieve recently added songs",
+			"params": [
+				{
+					"$ref": "List.Amount",
+					"default": -1,
+					"description": "The amount of recently added albums from which to return the songs",
+					"name": "albumlimit"
+				},
+				{
+					"$ref": "Audio.Fields.Song",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"songs": {
+						"items": {
+							"$ref": "Audio.Details.Song"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetRecentlyPlayedAlbums": {
+			"description": "Retrieve recently played albums",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Album",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"albums": {
+						"items": {
+							"$ref": "Audio.Details.Album"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetRecentlyPlayedSongs": {
+			"description": "Retrieve recently played songs",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Song",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"songs": {
+						"items": {
+							"$ref": "Audio.Details.Song"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetRoles": {
+			"description": "Retrieve all contributor roles",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Role",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"roles": {
+						"items": {
+							"$ref": "Audio.Details.Role"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetSongDetails": {
+			"description": "Retrieve details about a specific song",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "songid",
+					"required": true
+				},
+				{
+					"$ref": "Audio.Fields.Song",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"songdetails": {
+						"$ref": "Audio.Details.Song"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetSongs": {
+			"description": "Retrieve all songs from specified album, artist or genre",
+			"params": [
+				{
+					"$ref": "Audio.Fields.Song",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"description": "Song genre. Filter for existence of songs with this genre",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"description": "Song genre. Filter for existence of songs with this genre",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artistid": {
+									"$ref": "Library.Id",
+									"required": true
+								},
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"roleid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"role": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"albumid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"album": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.Songs"
+						}
+					]
+				},
+				{
+					"default": true,
+					"description": "Only songs from albums are returned when false, but overidden when singlesonly parameter is true",
+					"name": "includesingles",
+					"type": "boolean"
+				},
+				{
+					"default": false,
+					"description": "Whether or not to include all roles when filtering by artist, rather than default of excluding other contributors. When true it overrides any role filter value.",
+					"name": "allroles",
+					"type": "boolean"
+				},
+				{
+					"default": false,
+					"description": "Only singles are returned when true, and overides includesingles parameter",
+					"name": "singlesonly",
+					"type": "boolean"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"songs": {
+						"items": {
+							"$ref": "Audio.Details.Song"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"AudioLibrary.GetSources": {
+			"description": "Get all music sources, including unique ID",
+			"params": [
+				{
+					"$ref": "Library.Fields.Source",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"sources": {
+						"items": {
+							"$ref": "Library.Details.Source"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Favourites.GetFavourites": {
+			"description": "Retrieve all favourites",
+			"params": [
+				{
+					"default": null,
+					"name": "type",
+					"type": [
+						{
+							"type": "null"
+						},
+						{
+							"$ref": "Favourite.Type"
+						}
+					]
+				},
+				{
+					"$ref": "Favourite.Fields.Favourite",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"favourites": {
+						"items": {
+							"$ref": "Favourite.Details.Favourite"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Files.GetDirectory": {
+			"description": "Get the directories and files in the given directory",
+			"params": [
+				{
+					"name": "directory",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Files.Media",
+					"default": "files",
+					"name": "media"
+				},
+				{
+					"$ref": "List.Fields.Files",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"$ref": "List.Limits",
+					"description": "Limits are applied after getting the directory content thus retrieval is not faster when they are applied.",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"files": {
+						"items": {
+							"$ref": "List.Item.File"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Files.GetFileDetails": {
+			"description": "Get details for a specific file",
+			"params": [
+				{
+					"description": "Full path to the file",
+					"name": "file",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Files.Media",
+					"default": "files",
+					"name": "media"
+				},
+				{
+					"$ref": "List.Fields.Files",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"filedetails": {
+						"$ref": "List.Item.File",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Files.GetSources": {
+			"description": "Get the sources of the media windows",
+			"params": [
+				{
+					"$ref": "Files.Media",
+					"name": "media",
+					"required": true
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"sources": {
+						"$ref": "List.Items.Sources",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Files.PrepareDownload": {
+			"description": "Provides a way to download a given file (e.g. providing an URL to the real file location)",
+			"params": [
+				{
+					"name": "path",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"returns": {
+				"properties": {
+					"details": {
+						"description": "Transport specific details on how/from where to download the given file",
+						"required": true,
+						"type": "any"
+					},
+					"mode": {
+						"description": "Direct mode allows using Files.Download whereas redirect mode requires the usage of a different protocol",
+						"enums": [
+							"redirect",
+							"direct"
+						],
+						"required": true,
+						"type": "string"
+					},
+					"protocol": {
+						"enums": [
+							"http"
+						],
+						"required": true,
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"GUI.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"items": {
+						"$ref": "GUI.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "GUI.Property.Value"
+			},
+			"type": "method"
+		},
+		"GUI.GetStereoscopicModes": {
+			"description": "Returns the supported stereoscopic modes of the GUI",
+			"params": [],
+			"returns": {
+				"properties": {
+					"stereoscopicmodes": {
+						"items": {
+							"$ref": "GUI.Stereoscopy.Mode"
+						},
+						"type": "array",
+						"uniqueItems": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"JSONRPC.Introspect": {
+			"description": "Enumerates all actions and descriptions",
+			"params": [
+				{
+					"default": true,
+					"name": "getdescriptions",
+					"type": "boolean"
+				},
+				{
+					"default": false,
+					"name": "getmetadata",
+					"type": "boolean"
+				},
+				{
+					"default": true,
+					"name": "filterbytransport",
+					"type": "boolean"
+				},
+				{
+					"name": "filter",
+					"properties": {
+						"getreferences": {
+							"default": true,
+							"description": "Whether or not to print the schema for referenced types",
+							"type": "boolean"
+						},
+						"id": {
+							"description": "Name of a namespace, method or type",
+							"required": true,
+							"type": "string"
+						},
+						"type": {
+							"description": "Type of the given name",
+							"enums": [
+								"method",
+								"namespace",
+								"type",
+								"notification"
+							],
+							"required": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			],
+			"returns": {
+				"additionalProperties": false,
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"JSONRPC.NotifyAll": {
+			"description": "Notify all other connected clients",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "message",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"default": null,
+					"name": "data",
+					"type": "any"
+				}
+			],
+			"returns": {
+				"type": "any"
+			},
+			"type": "method"
+		},
+		"JSONRPC.Permission": {
+			"description": "Retrieve the clients permissions",
+			"params": [],
+			"returns": {
+				"properties": {
+					"controlgui": {
+						"required": true,
+						"type": "boolean"
+					},
+					"controlnotify": {
+						"required": true,
+						"type": "boolean"
+					},
+					"controlplayback": {
+						"required": true,
+						"type": "boolean"
+					},
+					"controlpower": {
+						"required": true,
+						"type": "boolean"
+					},
+					"controlpvr": {
+						"required": true,
+						"type": "boolean"
+					},
+					"controlsystem": {
+						"required": true,
+						"type": "boolean"
+					},
+					"executeaddon": {
+						"required": true,
+						"type": "boolean"
+					},
+					"manageaddon": {
+						"required": true,
+						"type": "boolean"
+					},
+					"navigate": {
+						"required": true,
+						"type": "boolean"
+					},
+					"readdata": {
+						"required": true,
+						"type": "boolean"
+					},
+					"removedata": {
+						"required": true,
+						"type": "boolean"
+					},
+					"updatedata": {
+						"required": true,
+						"type": "boolean"
+					},
+					"writefile": {
+						"required": true,
+						"type": "boolean"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"JSONRPC.Ping": {
+			"description": "Ping responder",
+			"params": [],
+			"returns": {
+				"type": "string"
+			},
+			"type": "method"
+		},
+		"JSONRPC.Version": {
+			"description": "Retrieve the JSON-RPC protocol version.",
+			"params": [],
+			"returns": {
+				"properties": {
+					"version": {
+						"properties": {
+							"major": {
+								"description": "Bumped on backwards incompatible changes to the API definition",
+								"minimum": 0,
+								"required": true,
+								"type": "integer"
+							},
+							"minor": {
+								"description": "Bumped on backwards compatible additions/changes to the API definition",
+								"minimum": 0,
+								"required": true,
+								"type": "integer"
+							},
+							"patch": {
+								"description": "Bumped on any changes to the internal implementation but not to the API definition",
+								"minimum": 0,
+								"required": true,
+								"type": "integer"
+							}
+						},
+						"required": true,
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetBroadcastDetails": {
+			"description": "Retrieves the details of a specific broadcast",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "broadcastid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Broadcast",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"broadcastdetails": {
+						"$ref": "PVR.Details.Broadcast"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetBroadcasts": {
+			"description": "Retrieves the program of a specific channel",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "channelid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Broadcast",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"broadcasts": {
+						"items": {
+							"$ref": "PVR.Details.Broadcast"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetChannelDetails": {
+			"description": "Retrieves the details of a specific channel",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "channelid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Channel",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"channeldetails": {
+						"$ref": "PVR.Details.Channel"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetChannelGroupDetails": {
+			"description": "Retrieves the details of a specific channel group",
+			"params": [
+				{
+					"$ref": "PVR.ChannelGroup.Id",
+					"name": "channelgroupid",
+					"required": true
+				},
+				{
+					"name": "channels",
+					"properties": {
+						"limits": {
+							"$ref": "List.Limits"
+						},
+						"properties": {
+							"$ref": "PVR.Fields.Channel"
+						}
+					},
+					"type": "object"
+				}
+			],
+			"returns": {
+				"properties": {
+					"channelgroupdetails": {
+						"$ref": "PVR.Details.ChannelGroup.Extended"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetChannelGroups": {
+			"description": "Retrieves the channel groups for the specified type",
+			"params": [
+				{
+					"$ref": "PVR.Channel.Type",
+					"name": "channeltype",
+					"required": true
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"channelgroups": {
+						"items": {
+							"$ref": "PVR.Details.ChannelGroup"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetChannels": {
+			"description": "Retrieves the channel list",
+			"params": [
+				{
+					"$ref": "PVR.ChannelGroup.Id",
+					"name": "channelgroupid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Channel",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"channels": {
+						"items": {
+							"$ref": "PVR.Details.Channel"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"items": {
+						"$ref": "PVR.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "PVR.Property.Value"
+			},
+			"type": "method"
+		},
+		"PVR.GetRecordingDetails": {
+			"description": "Retrieves the details of a specific recording",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "recordingid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Recording",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"recordingdetails": {
+						"$ref": "PVR.Details.Recording"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetRecordings": {
+			"description": "Retrieves the recordings",
+			"params": [
+				{
+					"$ref": "PVR.Fields.Recording",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"recordings": {
+						"items": {
+							"$ref": "PVR.Details.Recording"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetTimerDetails": {
+			"description": "Retrieves the details of a specific timer",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "timerid",
+					"required": true
+				},
+				{
+					"$ref": "PVR.Fields.Timer",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"timerdetails": {
+						"$ref": "PVR.Details.Timer"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"PVR.GetTimers": {
+			"description": "Retrieves the timers",
+			"params": [
+				{
+					"$ref": "PVR.Fields.Timer",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"timers": {
+						"items": {
+							"$ref": "PVR.Details.Timer"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Player.GetActivePlayers": {
+			"description": "Returns all active players",
+			"params": [],
+			"returns": {
+				"items": {
+					"properties": {
+						"playerid": {
+							"$ref": "Player.Id",
+							"required": true
+						},
+						"playertype": {
+							"enums": [
+								"internal",
+								"external",
+								"remote"
+							],
+							"required": true,
+							"type": "string"
+						},
+						"type": {
+							"$ref": "Player.Type",
+							"required": true
+						}
+					},
+					"type": "object"
+				},
+				"type": "array",
+				"uniqueItems": true
+			},
+			"type": "method"
+		},
+		"Player.GetItem": {
+			"description": "Retrieves the currently played item",
+			"params": [
+				{
+					"$ref": "Player.Id",
+					"name": "playerid",
+					"required": true
+				},
+				{
+					"$ref": "List.Fields.All",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"item": {
+						"$ref": "List.Item.All",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Player.GetPlayers": {
+			"description": "Get a list of available players",
+			"params": [
+				{
+					"default": "all",
+					"enums": [
+						"all",
+						"video",
+						"audio"
+					],
+					"name": "media",
+					"type": "string"
+				}
+			],
+			"returns": {
+				"items": {
+					"properties": {
+						"name": {
+							"$ref": "Global.String.NotEmpty",
+							"required": true
+						},
+						"playsaudio": {
+							"required": true,
+							"type": "boolean"
+						},
+						"playsvideo": {
+							"required": true,
+							"type": "boolean"
+						},
+						"type": {
+							"enums": [
+								"internal",
+								"external",
+								"remote"
+							],
+							"required": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"type": "array",
+				"uniqueItems": true
+			},
+			"type": "method"
+		},
+		"Player.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"$ref": "Player.Id",
+					"name": "playerid",
+					"required": true
+				},
+				{
+					"items": {
+						"$ref": "Player.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "Player.Property.Value"
+			},
+			"type": "method"
+		},
+		"Player.GetViewMode": {
+			"description": "Get view mode of video player",
+			"params": [],
+			"returns": {
+				"properties": {
+					"nonlinearstretch": {
+						"required": true,
+						"type": "boolean"
+					},
+					"pixelratio": {
+						"required": true,
+						"type": "number"
+					},
+					"verticalshift": {
+						"required": true,
+						"type": "number"
+					},
+					"viewmode": {
+						"$ref": "Player.ViewMode",
+						"required": true
+					},
+					"zoom": {
+						"required": true,
+						"type": "number"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Playlist.GetItems": {
+			"description": "Get all items from playlist",
+			"params": [
+				{
+					"$ref": "Playlist.Id",
+					"name": "playlistid",
+					"required": true
+				},
+				{
+					"$ref": "List.Fields.All",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"items": {
+						"items": {
+							"$ref": "List.Item.All"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Playlist.GetPlaylists": {
+			"description": "Returns all existing playlists",
+			"params": [],
+			"returns": {
+				"items": {
+					"properties": {
+						"playlistid": {
+							"$ref": "Playlist.Id",
+							"required": true
+						},
+						"type": {
+							"$ref": "Playlist.Type",
+							"required": true
+						}
+					},
+					"type": "object"
+				},
+				"type": "array",
+				"uniqueItems": true
+			},
+			"type": "method"
+		},
+		"Playlist.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"$ref": "Playlist.Id",
+					"name": "playlistid",
+					"required": true
+				},
+				{
+					"items": {
+						"$ref": "Playlist.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "Playlist.Property.Value"
+			},
+			"type": "method"
+		},
+		"Profiles.GetCurrentProfile": {
+			"description": "Retrieve the current profile",
+			"params": [
+				{
+					"$ref": "Profiles.Fields.Profile",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"$ref": "Profiles.Details.Profile"
+			},
+			"type": "method"
+		},
+		"Profiles.GetProfiles": {
+			"description": "Retrieve all profiles",
+			"params": [
+				{
+					"$ref": "Profiles.Fields.Profile",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"profiles": {
+						"items": {
+							"$ref": "Profiles.Details.Profile"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Settings.GetCategories": {
+			"description": "Retrieves all setting categories",
+			"params": [
+				{
+					"$ref": "Setting.Level",
+					"default": "standard",
+					"name": "level"
+				},
+				{
+					"default": "",
+					"name": "section",
+					"type": "string"
+				},
+				{
+					"extends": "Item.Fields.Base",
+					"items": {
+						"enums": [
+							"settings"
+						],
+						"type": "string"
+					},
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"categories": {
+						"items": {
+							"$ref": "Setting.Details.Category"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Settings.GetSections": {
+			"description": "Retrieves all setting sections",
+			"params": [
+				{
+					"$ref": "Setting.Level",
+					"default": "standard",
+					"name": "level"
+				},
+				{
+					"extends": "Item.Fields.Base",
+					"items": {
+						"enums": [
+							"categories"
+						],
+						"type": "string"
+					},
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"sections": {
+						"items": {
+							"$ref": "Setting.Details.Section"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Settings.GetSettingValue": {
+			"description": "Retrieves the value of a setting",
+			"params": [
+				{
+					"minLength": 1,
+					"name": "setting",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"returns": {
+				"properties": {
+					"value": {
+						"$ref": "Setting.Value.Extended",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Settings.GetSettings": {
+			"description": "Retrieves all settings",
+			"params": [
+				{
+					"$ref": "Setting.Level",
+					"default": "standard",
+					"name": "level"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"category": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								},
+								"section": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"settings": {
+						"items": {
+							"$ref": "Setting.Details.Setting"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"Settings.ResetSettingValue": {
+			"description": "Resets the value of a setting",
+			"params": [
+				{
+					"minLength": 1,
+					"name": "setting",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"returns": {
+				"type": "string"
+			},
+			"type": "method"
+		},
+		"Settings.SetSettingValue": {
+			"description": "Changes the value of a setting",
+			"params": [
+				{
+					"minLength": 1,
+					"name": "setting",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Setting.Value.Extended",
+					"name": "value",
+					"required": true
+				}
+			],
+			"returns": {
+				"type": "boolean"
+			},
+			"type": "method"
+		},
+		"System.GetProperties": {
+			"description": "Retrieves the values of the given properties",
+			"params": [
+				{
+					"items": {
+						"$ref": "System.Property.Name"
+					},
+					"name": "properties",
+					"required": true,
+					"type": "array",
+					"uniqueItems": true
+				}
+			],
+			"returns": {
+				"$ref": "System.Property.Value"
+			},
+			"type": "method"
+		},
+		"Textures.GetTextures": {
+			"description": "Retrieve all textures",
+			"params": [
+				{
+					"$ref": "Textures.Fields.Texture",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Filter.Textures",
+					"name": "filter"
+				}
+			],
+			"returns": {
+				"properties": {
+					"textures": {
+						"items": {
+							"$ref": "Textures.Details.Texture"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetEpisodeDetails": {
+			"description": "Retrieve details about a specific tv show episode",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "episodeid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.Episode",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"episodedetails": {
+						"$ref": "Video.Details.Episode"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetEpisodes": {
+			"description": "Retrieve all tv show episodes",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"default": -1,
+					"name": "tvshowid"
+				},
+				{
+					"default": -1,
+					"minimum": 0,
+					"name": "season",
+					"type": "integer"
+				},
+				{
+					"$ref": "Video.Fields.Episode",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"description": "Requires tvshowid to be set",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"description": "Requires tvshowid to be set",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"year": {
+									"minimum": 0,
+									"required": true,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"actor": {
+									"description": "Requires tvshowid to be set",
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"director": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.Episodes"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"episodes": {
+						"items": {
+							"$ref": "Video.Details.Episode"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetGenres": {
+			"description": "Retrieve all genres",
+			"params": [
+				{
+					"enums": [
+						"movie",
+						"tvshow",
+						"musicvideo"
+					],
+					"name": "type",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Library.Fields.Genre",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"genres": {
+						"items": {
+							"$ref": "Library.Details.Genre"
+						},
+						"required": true,
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetInProgressTVShows": {
+			"description": "Retrieve all in progress tvshows",
+			"params": [
+				{
+					"$ref": "Video.Fields.TVShow",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"tvshows": {
+						"items": {
+							"$ref": "Video.Details.TVShow"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMovieDetails": {
+			"description": "Retrieve details about a specific movie",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "movieid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.Movie",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"moviedetails": {
+						"$ref": "Video.Details.Movie"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMovieSetDetails": {
+			"description": "Retrieve details about a specific movie set",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "setid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.MovieSet",
+					"name": "properties"
+				},
+				{
+					"name": "movies",
+					"properties": {
+						"limits": {
+							"$ref": "List.Limits"
+						},
+						"properties": {
+							"$ref": "Video.Fields.Movie"
+						},
+						"sort": {
+							"$ref": "List.Sort"
+						}
+					},
+					"type": "object"
+				}
+			],
+			"returns": {
+				"properties": {
+					"setdetails": {
+						"$ref": "Video.Details.MovieSet.Extended"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMovieSets": {
+			"description": "Retrieve all movie sets",
+			"params": [
+				{
+					"$ref": "Video.Fields.MovieSet",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"sets": {
+						"items": {
+							"$ref": "Video.Details.MovieSet"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMovies": {
+			"description": "Retrieve all movies",
+			"params": [
+				{
+					"$ref": "Video.Fields.Movie",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"year": {
+									"minimum": 0,
+									"required": true,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"actor": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"director": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"studio": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"country": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"setid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"set": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"tag": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.Movies"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"movies": {
+						"items": {
+							"$ref": "Video.Details.Movie"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMusicVideoDetails": {
+			"description": "Retrieve details about a specific music video",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "musicvideoid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.MusicVideo",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"musicvideodetails": {
+						"$ref": "Video.Details.MusicVideo"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetMusicVideos": {
+			"description": "Retrieve all music videos",
+			"params": [
+				{
+					"$ref": "Video.Fields.MusicVideo",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"artist": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"year": {
+									"minimum": 0,
+									"required": true,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"director": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"studio": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"tag": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.MusicVideos"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"musicvideos": {
+						"items": {
+							"$ref": "Video.Details.MusicVideo"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetRecentlyAddedEpisodes": {
+			"description": "Retrieve all recently added tv episodes",
+			"params": [
+				{
+					"$ref": "Video.Fields.Episode",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"episodes": {
+						"items": {
+							"$ref": "Video.Details.Episode"
+						},
+						"type": "array"
+					},
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetRecentlyAddedMovies": {
+			"description": "Retrieve all recently added movies",
+			"params": [
+				{
+					"$ref": "Video.Fields.Movie",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"movies": {
+						"items": {
+							"$ref": "Video.Details.Movie"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetRecentlyAddedMusicVideos": {
+			"description": "Retrieve all recently added music videos",
+			"params": [
+				{
+					"$ref": "Video.Fields.MusicVideo",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"musicvideos": {
+						"items": {
+							"$ref": "Video.Details.MusicVideo"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetSeasonDetails": {
+			"description": "Retrieve details about a specific tv show season",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "seasonid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.Season",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"seasondetails": {
+						"$ref": "Video.Details.Season"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetSeasons": {
+			"description": "Retrieve all tv seasons",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"default": -1,
+					"name": "tvshowid"
+				},
+				{
+					"$ref": "Video.Fields.Season",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"seasons": {
+						"items": {
+							"$ref": "Video.Details.Season"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetTVShowDetails": {
+			"description": "Retrieve details about a specific tv show",
+			"params": [
+				{
+					"$ref": "Library.Id",
+					"name": "tvshowid",
+					"required": true
+				},
+				{
+					"$ref": "Video.Fields.TVShow",
+					"name": "properties"
+				}
+			],
+			"returns": {
+				"properties": {
+					"tvshowdetails": {
+						"$ref": "Video.Details.TVShow"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetTVShows": {
+			"description": "Retrieve all tv shows",
+			"params": [
+				{
+					"$ref": "Video.Fields.TVShow",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				},
+				{
+					"name": "filter",
+					"type": [
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genreid": {
+									"$ref": "Library.Id",
+									"required": true
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"genre": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"year": {
+									"minimum": 0,
+									"required": true,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"actor": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"studio": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"additionalProperties": false,
+							"properties": {
+								"tag": {
+									"minLength": 1,
+									"required": true,
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						{
+							"$ref": "List.Filter.TVShows"
+						}
+					]
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"tvshows": {
+						"items": {
+							"$ref": "Video.Details.TVShow"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"VideoLibrary.GetTags": {
+			"description": "Retrieve all tags",
+			"params": [
+				{
+					"enums": [
+						"movie",
+						"tvshow",
+						"musicvideo"
+					],
+					"name": "type",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"$ref": "Library.Fields.Tag",
+					"name": "properties"
+				},
+				{
+					"$ref": "List.Limits",
+					"name": "limits"
+				},
+				{
+					"$ref": "List.Sort",
+					"name": "sort"
+				}
+			],
+			"returns": {
+				"properties": {
+					"limits": {
+						"$ref": "List.LimitsReturned",
+						"required": true
+					},
+					"tags": {
+						"items": {
+							"$ref": "Library.Details.Tag"
+						},
+						"required": true,
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"XBMC.GetInfoBooleans": {
+			"description": "Retrieve info booleans about Kodi and the system",
+			"params": [
+				{
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1,
+					"name": "booleans",
+					"required": true,
+					"type": "array"
+				}
+			],
+			"returns": {
+				"additionalProperties": {
+					"default": "",
+					"type": "string"
+				},
+				"description": "Object containing key-value pairs of the retrieved info booleans",
+				"type": "object"
+			},
+			"type": "method"
+		},
+		"XBMC.GetInfoLabels": {
+			"description": "Retrieve info labels about Kodi and the system",
+			"params": [
+				{
+					"description": "See http://kodi.wiki/view/InfoLabels for a list of possible info labels",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1,
+					"name": "labels",
+					"required": true,
+					"type": "array"
+				}
+			],
+			"returns": {
+				"additionalProperties": {
+					"default": "",
+					"type": "string"
+				},
+				"description": "Object containing key-value pairs of the retrieved info labels",
+				"type": "object"
+			},
+			"type": "method"
+		}
+	},
+	"notifications": {
+		"Application.OnVolumeChanged": {
+			"description": "The volume of the application has changed.",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"properties": {
+						"muted": {
+							"required": true,
+							"type": "boolean"
+						},
+						"volume": {
+							"maximum": 100,
+							"minimum": 0,
+							"required": true,
+							"type": "integer"
+						}
+					},
+					"required": true,
+					"type": "object"
+				}
+			],
+			"returns": null,
+			"type": "notification"
+		},
+		"AudioLibrary.OnCleanFinished": {
+			"description": "The audio library has been cleaned.",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"required": true,
+					"type": "null"
+				}
+			],
+			"returns": null,
+			"type": "notification"
+		},
+		"AudioLibrary.OnCleanStarted": {
+			"description": "An audio library clean operation has started.",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"required": true,
+					"type": "null"
+				}
+			],
+			"returns": null,
+			"type": "notification"
+		},
+		"AudioLibrary.OnExport": {
+			"description": "An audio library export has finished.",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"properties": {
+						"failcount": {
+							"default": 0,
+							"minimum": 0,
+							"required": false,
+							"type": "integer"
+						},
+						"file": {
+							"default": "",
+							"required": false,
+							"type": "string"
+						}
+					},
+					"required": false,
+					"type": "object"
+				}
+			],
+			"returns": null,
+			"type": "notification"
+		},
+		"AudioLibrary.OnRemove": {
+			"description": "An audio item has been removed.",
+			"params": [
+				{
+					"name": "sender",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "data",
+					"properties": {
+						"id": {
+							"$ref": "Library.Id",
+							"required": true
+						},
+						"transaction": {
+							"$ref": "Optional.Boolean",
+							"description": "True if the removal is being performed within a transaction."
+						},
+						"type": {
+							"$ref": "Notifications.Library.Audio.Type",
+							"required": true
+						}
+					},
+					"required": true,
+					"type": "object"
+				}
+			],
+			"returns": null,
+			"type": "notification"
+		},
+		"AudioLibrary.OnScanFinished": {
+			"description": "Scanning the audio library has been finished.",
+			"params": [
+				{
+					"name": "sender",
+					"required": tr')
